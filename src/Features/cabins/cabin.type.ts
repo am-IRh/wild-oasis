@@ -2,7 +2,7 @@ import type { CabinCreateWithImage, CabinType } from "../../service/apiCabins";
 
 interface PropsType {
   cabinToEdit?: CabinType;
-  onShowForm: any;
+  onCloseModal?: any;
 }
 
 interface MutationType {

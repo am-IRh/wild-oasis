@@ -1,15 +1,11 @@
-import { useState } from "react";
-
+import AddCabinBtn from "../Features/cabins/AddCabinBtn";
 import CabinTable from "../Features/cabins/CabinTable";
-import CreateCabinForm from "../Features/cabins/CreateCabinFrom";
 import { useCabins } from "../Features/cabins/useCabins";
-import Button from "../ui/Button";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 import Spinner from "../ui/Spinner";
 
 function Cabins() {
-  const [showForm, setShowForm] = useState(false);
   const { isLoading, cabins, error } = useCabins();
 
   if (isLoading) return <Spinner />;
@@ -23,10 +19,7 @@ function Cabins() {
       </Row>
       <Row>
         {cabins && <CabinTable cabins={cabins} />}
-        <Button onClick={() => setShowForm((sh) => !sh)}>
-          {showForm ? "Close Form" : "Add new cabin "}
-        </Button>
-        {showForm && <CreateCabinForm onShowForm={setShowForm} />}
+        <AddCabinBtn />
       </Row>
     </>
   );

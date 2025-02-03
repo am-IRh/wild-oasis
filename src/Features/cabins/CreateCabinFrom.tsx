@@ -20,7 +20,7 @@ import { useCreateCabin } from "./useCreateCabin";
  * @returns {JSX.Element} The rendered CreateCabinForm component.
  */
 
-function CreateCabinForm({ cabinToEdit, onShowForm }: PropsType) {
+function CreateCabinForm({ cabinToEdit, onCloseModal }: PropsType) {
   // Determine if we are in edit mode based on the existence of an ID.
   const { id: editId, ...editValue } = cabinToEdit || {};
   const isEditSession = Boolean(editId);
@@ -42,11 +42,11 @@ function CreateCabinForm({ cabinToEdit, onShowForm }: PropsType) {
   // Wrap the form submission with react-hook-form's handleSubmit.
   const onSubmit = handleSubmit((data) =>
     // If editId is defined, we are editing; otherwise, we create a new cabin.
-    handleCabinSubmit(data, editId, mutate, reset, onShowForm)
+    handleCabinSubmit(data, editId, mutate, reset, onCloseModal)
   );
 
   return (
-    <Form onSubmit={onSubmit}>
+    <Form type={onCloseModal ? "modal" : "regular"} onSubmit={onSubmit}>
       <CabinFormFields
         getValues={getValues}
         isPending={isPending}
@@ -65,7 +65,7 @@ function CreateCabinForm({ cabinToEdit, onShowForm }: PropsType) {
       <FormRow>
         <>
           {/* type is an HTML attribute! */}
-          <Button disabled={isPending} type="reset" variation="secondary">
+          <Button disabled={isPending} type="button" onClick={onCloseModal} variation="secondary">
             Cancel
           </Button>
           <Button disabled={isPending}>{isEditSession ? "Edit Cabin" : "Create new Cabin"}</Button>

@@ -7,14 +7,14 @@ import type { CabinCreateWithImage } from "../../service/apiCabins";
  * @param {number | undefined} editId - The cabin ID if editing.
  * @param {Function} mutate - The mutation function to call.
  * @param {Function} reset - Function to reset the form.
- * @param {React.Dispatch<React.SetStateAction<boolean>>} [onShowForm] - Optional callback to hide the form on success.
+ * @param {React.Dispatch<React.SetStateAction<boolean>>} [onCloseModal] - Optional callback to hide the form on success.
  */
 export function handleCabinSubmit(
   data: CabinCreateWithImage,
   editId: number | undefined,
   mutate: any,
   reset: any,
-  onShowForm?: React.Dispatch<React.SetStateAction<null>>
+  onCloseModal?: React.Dispatch<React.SetStateAction<null>>
 ) {
   const isEditSession = Boolean(editId);
   const mutationData = isEditSession
@@ -25,7 +25,7 @@ export function handleCabinSubmit(
     // Reset the form only if it's a create operation.
     onSuccess: () => {
       if (!isEditSession) reset();
-      if (onShowForm) onShowForm(null);
+      if (onCloseModal) onCloseModal(null);
     },
   });
 }
