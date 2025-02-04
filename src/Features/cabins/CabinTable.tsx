@@ -1,4 +1,3 @@
-import { useState } from "react";
 import styled from "styled-components";
 
 import type { CabinType } from "../../service/apiCabins";
@@ -34,12 +33,6 @@ interface CabinTableProps {
 }
 
 const CabinTable: React.FC<CabinTableProps> = ({ cabins }) => {
-  const [activeCabin, setActiveCabin] = useState<number | null>(null);
-
-  function handleToggleForm(id: number | null) {
-    setActiveCabin((prev: number | null) => (prev === id ? null : id));
-  }
-
   return (
     <Table role="table">
       <TableHeader role="row">
@@ -51,12 +44,7 @@ const CabinTable: React.FC<CabinTableProps> = ({ cabins }) => {
         <div></div>
       </TableHeader>
       {cabins.map((cabin) => (
-        <CabinRow
-          activeEditCabin={activeCabin}
-          cabin={cabin}
-          key={cabin.id}
-          onToggleForm={(id: number | null) => handleToggleForm(id)}
-        />
+        <CabinRow cabin={cabin} key={cabin.id} />
       ))}
     </Table>
   );

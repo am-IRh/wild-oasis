@@ -1,9 +1,10 @@
-import { useMemo } from "react";
 import { HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
 import styled from "styled-components";
 
 import type { CabinType } from "../../service/apiCabins";
 
+import ConfirmDelete from "../../ui/ConfirmDelete";
+import Modal from "../../ui/Modal";
 import Spinner from "../../ui/Spinner";
 import { formatCurrency } from "../../utils/helpers";
 import CreateCabinForm from "./CreateCabinFrom";
@@ -51,13 +52,14 @@ const Discount = styled.div`
 
 interface CabinRowProps {
   cabin: CabinType;
-  activeEditCabin: number | null;
-  onToggleForm: (id: number | null) => void;
 }
-const CabinRow = ({ cabin, activeEditCabin, onToggleForm }: CabinRowProps) => {
+const CabinRow = ({ cabin }: CabinRowProps) => {
+  // Custom hooks to handle deletion and duplication actions
   const { isPending: isDelete, mutate } = useDeleteCabin();
   const { isPending: isDuplicate, mutate: DuplicateMutate } = useCreateCabin();
-  const isPending = useMemo(() => isDelete || isDuplicate, [isDelete, isDuplicate]);
+
+  // Determine if any mutation is currently pending
+  const isPending = isDelete || isDuplicate;
 
   const { id: cabinId, name, maxCapacity, regularPrice, discount, imageUrl } = cabin;
 
@@ -74,33 +76,56 @@ const CabinRow = ({ cabin, activeEditCabin, onToggleForm }: CabinRowProps) => {
     });
   }
   return (
-    <>
-      <TableRow role="row">
-        <Img src={imageUrl || ""} />
-        <Cabin>{name}</Cabin>
-        <div>Fits up to {maxCapacity} guests</div>
-        <Price>{formatCurrency(regularPrice)}</Price>
-        {discount ? <Discount>{formatCurrency(discount)}</Discount> : <span>&mdash;</span>}
-        {isPending ? (
-          <Spinner type="small" />
-        ) : (
-          <div>
-            <button disabled={isPending} type="button" onClick={handleDuplicate}>
-              <HiSquare2Stack />
-            </button>
-            <button disabled={isPending} type="button" onClick={() => mutate(cabinId)}>
-              <HiTrash />
-            </button>
-            <button disabled={isPending} type="button" onClick={() => onToggleForm(cabinId)}>
-              <HiPencil />
-            </button>
-          </div>
-        )}
-      </TableRow>
-      {activeEditCabin === cabinId && (
-        <CreateCabinForm cabinToEdit={cabin} onShowForm={() => onToggleForm(null)} />
+    <TableRow role="row">
+      <Img src={imageUrl || ""} />
+      <Cabin>{name}</Cabin>
+      <div>Fits up to {maxCapacity} guests</div>
+      <Price>{formatCurrency(regularPrice)}</Price>
+      {discount ? <Discount>{formatCurrency(discount)}</Discount> : <span>&mdash;</span>}
+      {isPending ? (
+        <Spinner type="small" />
+      ) : (
+        <div>
+          <Modal>
+            <Modal.Open opens="edit">
+              {({ onClick }) => (
+                <button disabled={isPending} type="button" onClick={onClick}>
+                  <HiPencil />
+                </button>
+              )}
+            </Modal.Open>
+            <Modal.Window name="edit">
+              {({ onCloseModal }) => (
+                <CreateCabinForm cabinToEdit={cabin} onCloseModal={onCloseModal} />
+              )}
+            </Modal.Window>
+          </Modal>
+          <Modal>
+            <Modal.Open opens="delete">
+              {/* onClick={() => mutate(cabinId)} */}
+              {({ onClick }) => (
+                <button disabled={isPending} type="button" onClick={onClick}>
+                  <HiTrash />
+                </button>
+              )}
+            </Modal.Open>
+            <Modal.Window name="delete">
+              {({ onCloseModal }) => (
+                <ConfirmDelete
+                  disabled={isDelete}
+                  closeModal={onCloseModal}
+                  onConfirm={() => mutate(cabinId)}
+                  resource={name}
+                />
+              )}
+            </Modal.Window>
+          </Modal>
+          <button disabled={isPending} type="button" onClick={handleDuplicate}>
+            <HiSquare2Stack />
+          </button>
+        </div>
       )}
-    </>
+    </TableRow>
   );
 };
 export default CabinRow;

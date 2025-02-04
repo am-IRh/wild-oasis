@@ -100,8 +100,8 @@ function Window({ name, children }: WindowProps) {
 
   if (openName !== name) return null;
   return createPortal(
-    <Overlay>
-      <StyledModal>
+    <Overlay onClick={close}>
+      <StyledModal onClick={(e) => e.stopPropagation()}>
         <Button onClick={close}>
           <HiXMark />
         </Button>
