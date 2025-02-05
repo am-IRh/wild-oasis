@@ -4,24 +4,14 @@ import styled from "styled-components";
 import type { CabinType } from "../../service/apiCabins";
 
 import ConfirmDelete from "../../ui/ConfirmDelete";
+import Menus from "../../ui/Menus";
 import Modal from "../../ui/Modal";
 import Spinner from "../../ui/Spinner";
+import Table from "../../ui/Table";
 import { formatCurrency } from "../../utils/helpers";
 import CreateCabinForm from "./CreateCabinFrom";
 import { useCreateCabin } from "./useCreateCabin";
 import { useDeleteCabin } from "./useDeleteCabin";
-
-const TableRow = styled.div`
-  display: grid;
-  grid-template-columns: 0.6fr 1.8fr 2.2fr 1fr 1fr 1fr;
-  column-gap: 2.4rem;
-  align-items: center;
-  padding: 1.4rem 2.4rem;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid var(--color-grey-100);
-  }
-`;
 
 const Img = styled.img`
   display: block;
@@ -76,7 +66,7 @@ const CabinRow = ({ cabin }: CabinRowProps) => {
     });
   }
   return (
-    <TableRow role="row">
+    <Table.Row>
       <Img src={imageUrl || ""} />
       <Cabin>{name}</Cabin>
       <div>Fits up to {maxCapacity} guests</div>
@@ -87,45 +77,48 @@ const CabinRow = ({ cabin }: CabinRowProps) => {
       ) : (
         <div>
           <Modal>
-            <Modal.Open opens="edit">
-              {({ onClick }) => (
-                <button disabled={isPending} type="button" onClick={onClick}>
-                  <HiPencil />
-                </button>
-              )}
-            </Modal.Open>
-            <Modal.Window name="edit">
-              {({ onCloseModal }) => (
-                <CreateCabinForm cabinToEdit={cabin} onCloseModal={onCloseModal} />
-              )}
-            </Modal.Window>
+            <Menus.Menu>
+              <Menus.Toggle id={cabinId.toString()} />
+              <Menus.List id={cabinId.toString()}>
+                <Menus.Button icon={<HiSquare2Stack />} onClick={handleDuplicate}>
+                  Duplicate
+                </Menus.Button>
+                <Modal.Open opens="edit">
+                  {({ onClick }) => (
+                    <Menus.Button icon={<HiPencil />} onClick={onClick}>
+                      Edit
+                    </Menus.Button>
+                  )}
+                </Modal.Open>
+                <Modal.Open opens="delete">
+                  {({ onClick }) => (
+                    <Menus.Button icon={<HiTrash />} onClick={onClick}>
+                      Delete
+                    </Menus.Button>
+                  )}
+                </Modal.Open>
+              </Menus.List>
+
+              <Modal.Window name="edit">
+                {({ onCloseModal }) => (
+                  <CreateCabinForm cabinToEdit={cabin} onCloseModal={onCloseModal} />
+                )}
+              </Modal.Window>
+              <Modal.Window name="delete">
+                {({ onCloseModal }) => (
+                  <ConfirmDelete
+                    disabled={isDelete}
+                    closeModal={onCloseModal}
+                    onConfirm={() => mutate(cabinId)}
+                    resource={name}
+                  />
+                )}
+              </Modal.Window>
+            </Menus.Menu>
           </Modal>
-          <Modal>
-            <Modal.Open opens="delete">
-              {/* onClick={() => mutate(cabinId)} */}
-              {({ onClick }) => (
-                <button disabled={isPending} type="button" onClick={onClick}>
-                  <HiTrash />
-                </button>
-              )}
-            </Modal.Open>
-            <Modal.Window name="delete">
-              {({ onCloseModal }) => (
-                <ConfirmDelete
-                  disabled={isDelete}
-                  closeModal={onCloseModal}
-                  onConfirm={() => mutate(cabinId)}
-                  resource={name}
-                />
-              )}
-            </Modal.Window>
-          </Modal>
-          <button disabled={isPending} type="button" onClick={handleDuplicate}>
-            <HiSquare2Stack />
-          </button>
         </div>
       )}
-    </TableRow>
+    </Table.Row>
   );
 };
 export default CabinRow;
