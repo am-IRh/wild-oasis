@@ -1,5 +1,6 @@
 import AddCabinBtn from "../Features/cabins/AddCabinBtn";
 import CabinTable from "../Features/cabins/CabinTable";
+import CabinTableOperations from "../Features/cabins/CabinTableOperations";
 import { useCabins } from "../Features/cabins/useCabins";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
@@ -15,7 +16,7 @@ function Cabins() {
     <>
       <Row type="horizontal">
         <Heading as="h1">All cabins</Heading>
-        <p>Filter / Sort</p>
+        <CabinTableOperations />
       </Row>
       <Row>
         {cabins && <CabinTable cabins={cabins} />}
