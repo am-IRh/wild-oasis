@@ -43,20 +43,23 @@ interface FilterProps {
   filterField: string;
   options: { value: string; label: string }[];
 }
+
 export default function Filter({ filterField, options }: FilterProps) {
   const [searchParams, setSearchParams] = useSearchParams();
   const currentFilter = searchParams.get(filterField) || options.at(0)?.value;
+
   function handleClick(value: string) {
     searchParams.set(filterField, value);
     setSearchParams(searchParams);
   }
+
   return (
     <StyledFilter>
       {options.map((option) => {
-        console.log(option.value === currentFilter);
         return (
           <FilterButton
             active={option.value === currentFilter}
+            disabled={option.value === currentFilter}
             key={option.value}
             onClick={() => handleClick(option.value)}
           >
