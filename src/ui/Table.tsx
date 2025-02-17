@@ -1,12 +1,12 @@
 import type { FC, ReactNode } from "react";
-
 import { createContext, useContext, useMemo } from "react";
 import styled from "styled-components";
 
+import type { BookingType } from "../service/apiBookings";
 import type { CabinType } from "../service/apiCabins";
 
 interface CommonRowProps {
-  columns: string;
+  $columns: string;
 }
 
 const StyledTable = styled.div`
@@ -19,7 +19,7 @@ const StyledTable = styled.div`
 
 const CommonRow = styled.header<CommonRowProps>`
   display: grid;
-  grid-template-columns: ${(props) => props.columns};
+  grid-template-columns: ${(props) => props.$columns};
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
@@ -101,7 +101,7 @@ const Header: FC<TableSectionProps> = ({ children }) => {
   }
   const { columns } = context;
   return (
-    <StyledHeader columns={columns} role="row">
+    <StyledHeader $columns={columns} role="row">
       {children}
     </StyledHeader>
   );
@@ -114,15 +114,15 @@ const Row: FC<TableSectionProps> = ({ children }) => {
   }
   const { columns } = context;
   return (
-    <StyledRow columns={columns} role="row">
+    <StyledRow $columns={columns} role="row">
       {children}
     </StyledRow>
   );
 };
 
 interface BodyProps {
-  data: CabinType[];
-  render: (cabin: CabinType) => ReactNode;
+  data: BookingType[] | CabinType[];
+  render: (data: BookingType | CabinType) => ReactNode;
 }
 
 const Body: FC<BodyProps> = ({ data, render }) => {
