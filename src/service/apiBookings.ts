@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from "../ui/Pagination";
 import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
@@ -15,31 +16,37 @@ export interface BookingType {
   cabins: { name: string };
 }
 
+type FilterMethod = "eq" | "gt" | "gte" | "in" | "is" | "like" | "lt" | "lte" | "neq";
+
 export async function getBookings({
   filter,
   sortBy,
+  page,
 }: {
-  filter: { field: string; value: string; method?: string } | null;
+  filter?: { field: string; value: string; method?: FilterMethod } | null;
+  page: number;
   sortBy?: { field: string; direction: string };
 }) {
   let query = supabase
     .from("bookings")
     .select(
-      "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name),  guests(fullName, email)"
+      "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)",
+      { count: "exact" }
     );
 
   // FILTER
-  if (filter !== null) query = query[filter.method || "eq"](filter.field, filter.value);
+  if (filter) query = (query as any)[filter.method || "eq"](filter.field, filter.value);
   // SORT
   if (sortBy) query = query.order(sortBy.field, { ascending: sortBy.direction === "asc" });
-
-  const { data, error } = await query;
-
-  if (error) {
-    throw new Error("Bookings could not get loaded");
+  // PAGINATION
+  if (page && !filter) {
+    const from = (page - 1) * PAGE_SIZE;
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
   }
-
-  return data as unknown as BookingType[];
+  const { data, error, count } = await query;
+  if (error) throw new Error("Bookings could not be loaded");
+  return { data, count };
 }
 
 export async function getBooking(id: string): Promise<BookingType> {

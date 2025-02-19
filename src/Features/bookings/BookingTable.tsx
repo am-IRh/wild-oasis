@@ -1,6 +1,7 @@
 import type { BookingType } from "../../service/apiBookings";
 
 import Empty from "../../ui/Empty";
+import Pagination from "../../ui/Pagination";
 import Menus from "../../ui/Menus";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
@@ -8,7 +9,7 @@ import BookingRow from "./BookingRow";
 import useBookings from "./useBookings";
 
 function BookingTable() {
-  const { bookings, isLoading } = useBookings();
+  const { bookings, isLoading, count } = useBookings();
 
   if (isLoading) return <Spinner />;
   if (!bookings?.length) return <Empty resource={"Bookings"} />;
@@ -30,6 +31,9 @@ function BookingTable() {
             render={(booking) => <BookingRow key={booking.id} booking={booking as BookingType} />}
           />
         )}
+        <Table.Footer>
+          <Pagination count={count} />
+        </Table.Footer>
       </Table>
     </Menus>
   );
