@@ -71,8 +71,8 @@ const StyledButton = styled.button`
 
 // Context definition
 interface MenusContextType {
-  openId: string;
-  open: (id: string) => void;
+  openId: number | string;
+  open: (id: number | string) => void;
   close: () => void;
   position: { x: number; y: number } | null;
   setPosition: React.Dispatch<React.SetStateAction<Position | null>>;
@@ -92,10 +92,10 @@ const Menus: FC<MenusProps> & {
   Button: typeof Button;
   Menu: typeof Menu;
 } = ({ children }) => {
-  const [openId, setOpenId] = useState<string>("");
+  const [openId, setOpenId] = useState<number | string>("");
   const [position, setPosition] = useState<Position | null>(null);
 
-  const open = (id: string) => setOpenId(id);
+  const open = (id: number | string) => setOpenId(id);
   const close = () => setOpenId("");
 
   const contextValue = useMemo(
@@ -108,7 +108,7 @@ const Menus: FC<MenusProps> & {
 
 // Toggle component
 interface ToggleProps {
-  id: string;
+  id: number | string;
 }
 interface HandleClickEvent extends React.MouseEvent<HTMLButtonElement> {
   target: EventTarget & HTMLButtonElement;
@@ -144,7 +144,7 @@ function Toggle({ id }: ToggleProps) {
 
 // List component
 interface ListProps {
-  id: string;
+  id: number | string;
   children: ReactNode;
 }
 

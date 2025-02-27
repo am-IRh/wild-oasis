@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { updateBooking } from "../../service/apiBookings";
 
 interface CheckMutationFnArg {
-  bookingId: string;
+  bookingId: number;
   breakfast: {
     hasBreakfast?: boolean;
     extrasPrice?: number;

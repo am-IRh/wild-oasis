@@ -14,6 +14,7 @@ import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
 import Spinner from "../../ui/Spinner";
 import Tag from "../../ui/Tag";
+import { useCheckOut } from "../check-in-out/useCheckOut";
 import BookingDataBox from "./BookingDataBox";
 import { useBooking } from "./useBooking";
 
@@ -31,6 +32,7 @@ const statusToTagName: Record<BookingType["status"], string> = {
 
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
+  const { checkOut, isCheckingOut } = useCheckOut();
   const moveBack = useMoveBack();
   const navigate = useNavigate();
 
@@ -57,7 +59,9 @@ function BookingDetail() {
         )}
 
         {status === "checked-in" && (
-          <Button onClick={() => navigate(`/check/${bookingId}`)}>Check out</Button>
+          <Button disabled={isCheckingOut} onClick={() => checkOut(bookingId)}>
+            Check out
+          </Button>
         )}
 
         {/* <Modal>

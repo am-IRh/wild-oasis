@@ -3,7 +3,7 @@ import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
 export interface BookingType {
-  id: string;
+  id: number;
   numNights: number;
   numGuests: number;
   created_at: string;
@@ -49,7 +49,7 @@ export async function getBookings({
   // SORT
   if (sortBy) query = query.order(sortBy.field, { ascending: sortBy.direction === "asc" });
   // PAGINATION
-  if (page && !filter) {
+  if (page) {
     const from = (page - 1) * PAGE_SIZE;
     const to = from + PAGE_SIZE - 1;
     query = query.range(from, to);
@@ -123,7 +123,7 @@ export async function getStaysTodayActivity(): Promise<BookingType[]> {
   return data as BookingType[];
 }
 
-export async function updateBooking(id: string, obj: Partial<BookingType>): Promise<BookingType> {
+export async function updateBooking(id: number, obj: Partial<BookingType>): Promise<BookingType> {
   const { data, error } = await supabase
     .from("bookings")
     .update(obj)

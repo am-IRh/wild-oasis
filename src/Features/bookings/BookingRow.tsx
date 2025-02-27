@@ -9,6 +9,7 @@ import Menus from "../../ui/Menus";
 import Table from "../../ui/Table";
 import Tag from "../../ui/Tag";
 import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
+import { useCheckOut } from "../check-in-out/useCheckOut";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -58,6 +59,7 @@ function BookingRow({
   booking: BookingType;
 }) {
   const navigate = useNavigate();
+  const { checkOut, isCheckingOut } = useCheckOut();
 
   return (
     <Table.Row>
@@ -96,6 +98,11 @@ function BookingRow({
               onClick={() => navigate(`/check/${bookingId}`)}
             >
               Check in
+            </Menus.Button>
+          )}
+          {status === "checked-in" && (
+            <Menus.Button icon={<HiArrowDownOnSquare />} onClick={() => checkOut(bookingId)}>
+              Check out
             </Menus.Button>
           )}
         </Menus.List>
