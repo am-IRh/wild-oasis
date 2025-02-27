@@ -49,8 +49,8 @@ const variations = {
 };
 
 interface ButtonType {
-  variation?: "danger" | "primary" | "secondary";
-  size?: "large" | "medium" | "small";
+  $variation?: "danger" | "primary" | "secondary";
+  $size?: "large" | "medium" | "small";
 }
 
 const Button = styled.button<ButtonType>`
@@ -58,15 +58,8 @@ const Button = styled.button<ButtonType>`
   border-radius: var(--border-radius-sm);
   box-shadow: var(--shadow-sm);
 
-  ${(props) => sizes[props.size ?? "medium"]}
-  ${(props) => variations[props.variation ?? "primary"]}
+  ${(props) => sizes[props.$size ?? "medium"]}
+  ${(props) => variations[props.$variation ?? "primary"]}
 `;
-
-/*
-// typescript not allows to use this
-Button.defaultProps = {
-  variation: "primary",
-  size: "medium",
-}; */
 
 export default Button;

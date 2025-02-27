@@ -1,6 +1,6 @@
 import { HiChevronLeft, HiChevronRight } from "react-icons/hi2";
-import styled from "styled-components";
 import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 
 const StyledPagination = styled.div`
   width: 100%;

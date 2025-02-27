@@ -3,8 +3,10 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import GlobalStyle from "./globalStyle";
+import Booking from "./Page/Booking";
 import Bookings from "./Page/Bookings";
 import Cabins from "./Page/Cabins";
+import Check from "./Page/Check";
 import Dashboard from "./Page/Dashboard";
 import Settings from "./Page/Settings";
 import Users from "./Page/Users";
@@ -26,6 +28,10 @@ function App() {
             <Route element={<Cabins />} path="/cabins" />
             <Route element={<Users />} path="/users" />
             <Route element={<Settings />} path="/settings" />
+
+            <Route element={<Booking />} path="/bookings/:bookingId" />
+            <Route element={<Check />} path="/check/:bookingId" />
+            <Route element={<p>NOT FOUND</p>} path="*" />
           </Route>
         </Routes>
       </BrowserRouter>

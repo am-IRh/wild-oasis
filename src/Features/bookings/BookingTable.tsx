@@ -1,8 +1,8 @@
 import type { BookingType } from "../../service/apiBookings";
 
 import Empty from "../../ui/Empty";
-import Pagination from "../../ui/Pagination";
 import Menus from "../../ui/Menus";
+import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import BookingRow from "./BookingRow";

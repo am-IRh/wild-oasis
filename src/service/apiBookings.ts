@@ -12,7 +12,17 @@ export interface BookingType {
   startDate: string;
   endDate: string;
   status: string;
-  guests: { fullName: string; email: string };
+  cabinPrice: number;
+  hasBreakfast: boolean;
+  observations: string;
+  isPaid: boolean;
+  guests: {
+    fullName: string;
+    email: string;
+    countryFlag: string;
+    nationalID: number;
+    nationality: string;
+  };
   cabins: { name: string };
 }
 
