@@ -46,10 +46,10 @@ const ConfirmDelete: React.FC<ConfirmDeleteProps> = ({
       </p>
 
       <div>
-        <Button onClick={closeModal} variation="secondary">
+        <Button $variation="secondary" onClick={closeModal}>
           Cancel
         </Button>
-        <Button disabled={disabled} onClick={handleConfirmClick} variation="danger">
+        <Button disabled={disabled} $variation="danger" onClick={handleConfirmClick}>
           Delete
         </Button>
       </div>

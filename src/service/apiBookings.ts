@@ -138,7 +138,7 @@ export async function updateBooking(id: number, obj: Partial<BookingType>): Prom
   return data as BookingType;
 }
 
-export async function deleteBooking(id: string): Promise<null> {
+export async function deleteBooking(id: number): Promise<null> {
   // REMEMBER RLS POLICIES
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 
