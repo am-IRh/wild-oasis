@@ -12,6 +12,8 @@ import Settings from "./Page/Settings";
 import Users from "./Page/Users";
 import AppLayout from "./ui/AppLayout";
 import Notification from "./ui/ToastSettings";
+import Login from "./Page/Login";
+import ProtectedRoute from "./ui/ProtectedRoute";
 
 const queryClient = new QueryClient();
 
@@ -21,7 +23,13 @@ function App() {
       <GlobalStyle />
       <BrowserRouter>
         <Routes>
-          <Route element={<AppLayout />}>
+          <Route
+            element={
+              <ProtectedRoute>
+                <AppLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route index element={<Navigate replace to="/dashboard" />} />
             <Route element={<Dashboard />} path="/dashboard" />
             <Route element={<Bookings />} path="/Bookings" />
@@ -31,8 +39,10 @@ function App() {
 
             <Route element={<Booking />} path="/bookings/:bookingId" />
             <Route element={<Check />} path="/check/:bookingId" />
-            <Route element={<p>NOT FOUND</p>} path="*" />
           </Route>
+
+          <Route element={<Login />} path="login"></Route>
+          <Route element={<p>NOT FOUND</p>} path="*" />
         </Routes>
       </BrowserRouter>
       <Notification />

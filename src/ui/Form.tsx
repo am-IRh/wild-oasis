@@ -6,10 +6,9 @@ interface FormType {
 
 const Form = styled.form<FormType>`
   ${(props) =>
-    props.type !== "regular" &&
+    props.type === "regular" &&
     css`
-      padding: 2.4rem 4rem;
-
+      padding: 3rem 4rem;
       /* Box */
       background-color: var(--color-grey-0);
       border: 1px solid var(--color-grey-100);
