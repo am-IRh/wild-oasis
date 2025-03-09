@@ -3,15 +3,21 @@ import { useSearchParams } from "react-router-dom";
 import type { CabinType } from "../../service/apiCabins";
 
 import Menus from "../../ui/Menus";
+import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import CabinRow from "./CabinRow";
+import { useCabins } from "./useCabins";
 
 interface CabinTableProps {
-  cabins: CabinType[];
+  // cabins: CabinType[];
 }
 
-const CabinTable: React.FC<CabinTableProps> = ({ cabins }) => {
+const CabinTable: React.FC<CabinTableProps> = () => {
+  const { isLoading, cabins, error } = useCabins();
   const [searchParams] = useSearchParams();
+
+  if (isLoading || !cabins) return <Spinner />;
+  if (error) return <p>❌ Error: {error.message || "Something went wrong!"}</p>;
 
   const filterValue = searchParams.get("discount") || "all";
 
@@ -43,7 +49,7 @@ const CabinTable: React.FC<CabinTableProps> = ({ cabins }) => {
 
         <Table.Body
           data={sortedCabins}
-          render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
+          render={(cabin) => <CabinRow cabin={cabin as CabinType} key={cabin.id} />}
         />
       </Table>
     </Menus>

@@ -65,7 +65,7 @@ function CreateCabinForm({ cabinToEdit, onCloseModal }: PropsType) {
       <FormRow>
         <>
           {/* type is an HTML attribute! */}
-          <Button disabled={isPending} type="button" onClick={onCloseModal} variation="secondary">
+          <Button disabled={isPending} type="button" $variation="secondary" onClick={onCloseModal}>
             Cancel
           </Button>
           <Button disabled={isPending}>{isEditSession ? "Edit Cabin" : "Create new Cabin"}</Button>

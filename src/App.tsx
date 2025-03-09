@@ -3,17 +3,18 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
 import GlobalStyle from "./globalStyle";
+import Account from "./Page/Account";
 import Booking from "./Page/Booking";
 import Bookings from "./Page/Bookings";
 import Cabins from "./Page/Cabins";
 import Check from "./Page/Check";
 import Dashboard from "./Page/Dashboard";
+import Login from "./Page/Login";
 import Settings from "./Page/Settings";
 import Users from "./Page/Users";
 import AppLayout from "./ui/AppLayout";
-import Notification from "./ui/ToastSettings";
-import Login from "./Page/Login";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import Notification from "./ui/ToastSettings";
 
 const queryClient = new QueryClient();
 
@@ -39,6 +40,7 @@ function App() {
 
             <Route element={<Booking />} path="/bookings/:bookingId" />
             <Route element={<Check />} path="/check/:bookingId" />
+            <Route element={<Account />} path="/account" />
           </Route>
 
           <Route element={<Login />} path="login"></Route>
