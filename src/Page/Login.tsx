@@ -3,7 +3,6 @@ import styled from "styled-components";
 import LoginForm from "../Features/auth/LoginForm";
 import Heading from "../ui/Heading";
 import Logo from "../ui/Logo";
-import BookingTable from "../Features/bookings/BookingTable";
 
 const LoginLayout = styled.main`
   min-height: 100vh;

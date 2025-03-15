@@ -12,7 +12,6 @@ export interface SignupCredentials {
 }
 
 export async function signup({ fullname, email, password }: SignupCredentials) {
-  console.log(fullname, password, email);
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
